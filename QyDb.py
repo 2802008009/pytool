@@ -48,6 +48,10 @@ class QyDb:
 
         return self.conn
 
+    def reconnect(self):
+        if not self.conn.is_connected():
+            self.conn.reconnect()
+
     def count(self, table='', where=None, sql=None):
         count = 0
         if not sql:
