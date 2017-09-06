@@ -239,7 +239,7 @@ def down_load_conf():
 # start nginx
 def start_nginx():
     try:
-        (status, output) = commands.getstatusoutput("ps -ef|grep nginx|awk '{print $2}'")
+        (status, output) = commands.getstatusoutput("ps -ef|grep -i [n]ginx|awk '{print $2}'")
         print output
 
         output = output.strip().split("\n")
@@ -280,14 +280,19 @@ def clear_log():
             fn = '/var/log/%s' % i
             if os.path.exists(fn):
                 (status, output) = commands.getstatusoutput("echo > %s" % fn)
+            (status, output) = commands.getstatusoutput("rm -rf %s*" % fn)
 
         (status, output) = commands.getstatusoutput("echo > /var/log/wtmp")
         (status, output) = commands.getstatusoutput("echo > /var/log/btmp")
-        (status, output) = commands.getstatusoutput("echo > ~/.bash_history")
         (status, output) = commands.getstatusoutput("echo > /var/log/lastlog")
         (status, output) = commands.getstatusoutput("rm -rf /var/log/*.log")
         (status, output) = commands.getstatusoutput("rm -rf /var/log/audit/*.log")
         (status, output) = commands.getstatusoutput("rm -rf /var/log/nginx/*.log")
+        (status, output) = commands.getstatusoutput("echo > ~/.bash_history")
+        (status, output) = commands.getstatusoutput("history -c")
+
+        (status, output) = commands.getstatusoutput("ps axjf|grep [n]ginx")
+        print output
 
         print time.strftime('%Y-%m-%d %H:%M:%S'), ' clear log sucess'
     except Exception as e:
